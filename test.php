@@ -1,7 +1,7 @@
 <?php
 require 'recipe-maker.php';
 
-function struk($pembelian, $bayar, $voucher = 0)
+function struk($pembelian, $bayar, $voucher = 0, $output = null)
 {
 	$recipe = new RecipeMaker(40);
 	$recipe->center('NIMCO STORE')
@@ -66,7 +66,12 @@ function struk($pembelian, $bayar, $voucher = 0)
 	$recipe->center('Terima Kasih & Selamat Belanja Kembali')
 		   ->breaks();
 	$recipe->end();
-	return $recipe->output();
+
+	if ($output == 'HTML') {
+		return $recipe->outputHTML();
+	} else {
+		return $recipe->output();
+	}
 }
 
 function number($value)
@@ -91,7 +96,11 @@ $pembelian = [
 
 $bayar = 200000;
 $voucher = 10000;
-echo $data = struk($pembelian, $bayar, $voucher);
+// show as HTML
+$data = struk($pembelian, $bayar, $voucher, $output = 'HTML');
+
+// return data
+// $data = struk($pembelian, $bayar, $voucher);
 
 // enable this for print in windows with shared folder only
 // $file =  'contoh.txt';  # nama file temporary yang akan dicetak

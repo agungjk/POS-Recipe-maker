@@ -58,6 +58,12 @@ class RecipeMaker
 		return $this->recipe;
 	}
 
+	public function outputHTML()
+	{
+		echo "<pre>";
+		echo nl2br($this->recipe);
+	}
+
 	private function emptyInput()
 	{
 		$this->left   = '';
