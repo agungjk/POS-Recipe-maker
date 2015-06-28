@@ -21,9 +21,9 @@ function struk($pembelian, $bayar, $voucher = 0, $output = null)
 		   ->breaks();
 	$recipe->breaks('-');
 
-	$jual        = 0;
-	$diskon      = 0;
-	$grand_total = 0;
+	$jual         = 0;
+	$total_diskon = 0;
+	$grand_total  = 0;
 	foreach ($pembelian as $key => $value) {
 		$value['sub_total'] = $value['harga'] * $value['qty'];
 		$jual += $value['sub_total'];
@@ -33,14 +33,15 @@ function struk($pembelian, $bayar, $voucher = 0, $output = null)
 			   ->breaks();
 
 		if ($value['diskon']) {
-			$recipe->left('- Discount')
-				   ->right(number($value['diskon']))
+			$diskon = $value['diskon'] * $value['sub_total'] / 100;
+			$recipe->left('- Diskon (' . $value['diskon'] . '%)')
+				   ->right(number($diskon))
 				   ->breaks();
 
-			$diskon += $value['diskon'];
+			$total_diskon += $diskon;
 		}
 	}
-	$grand_total = $jual - ($diskon + $voucher);
+	$grand_total = $jual - ($total_diskon + $voucher);
 	$kembali     = $bayar - $grand_total;
 
 	$recipe->breaks('-');
@@ -48,7 +49,7 @@ function struk($pembelian, $bayar, $voucher = 0, $output = null)
 		   ->right(number($jual))
 		   ->breaks();
 	$recipe->left('Total Diskon')
-		   ->right(number($diskon))
+		   ->right(number($total_diskon))
 		   ->breaks();
 	$recipe->left('Voucher')
 		   ->right(number($voucher))
@@ -84,13 +85,13 @@ $pembelian = [
 			'kode' => 'NMC-LSH-001-S',
 			'qty' => '1',
 			'harga' => '125000',
-			'diskon' => '25000'
+			'diskon' => '20'
 		],
 		[
 			'kode' => 'NMC-LSH-002-S',
 			'qty' => '1',
 			'harga' => '125000',
-			'diskon' => '25000'
+			'diskon' => '20'
 		]
 	];
 
