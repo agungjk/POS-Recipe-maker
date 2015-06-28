@@ -33,7 +33,7 @@ function struk($pembelian, $bayar, $voucher = 0, $output = null)
 			   ->breaks();
 
 		if ($value['diskon']) {
-			$recipe->left('Discount')
+			$recipe->left('- Discount')
 				   ->right(number($value['diskon']))
 				   ->breaks();
 
