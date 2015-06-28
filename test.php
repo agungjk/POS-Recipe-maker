@@ -1,28 +1,24 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('html_errors', 0);
-error_reporting(-1);
-
 require 'recipe-maker.php';
 
 function struk($pembelian, $bayar, $voucher = 0)
 {
 	$recipe = new RecipeMaker(40);
-	$recipe->center('NIMCO STORE');
-	$recipe->breaks();
-	$recipe->center('Jl. Cendrawasih No. 25');
-	$recipe->breaks();
-	$recipe->center('Demangan Baru Yogyakarta');
-	$recipe->breaks();
-	$recipe->center('Telp : ( 0274 ) 549827');
-	$recipe->breaks();
+	$recipe->center('NIMCO STORE')
+		   ->breaks();
+	$recipe->center('Jl. Cendrawasih No. 25')
+		   ->breaks();
+	$recipe->center('Demangan Baru Yogyakarta')
+		   ->breaks();
+	$recipe->center('Telp : ( 0274 ) 549827')
+		   ->breaks();
 	$recipe->breaks(' ');
-	$recipe->left('TRNS-00001');
-	$recipe->right('Nama Kasir');
-	$recipe->breaks();
-	$recipe->left(date('d-m-Y'));
-	$recipe->right('Nama Member');
-	$recipe->breaks();
+	$recipe->left('TRNS-00001')
+		   ->right('Nama Kasir')
+		   ->breaks();
+	$recipe->left(date('d-m-Y'))
+		   ->right('Nama Member')
+		   ->breaks();
 	$recipe->breaks('-');
 
 	$jual        = 0;
@@ -32,43 +28,43 @@ function struk($pembelian, $bayar, $voucher = 0)
 		$value['sub_total'] = $value['harga'] * $value['qty'];
 		$jual += $value['sub_total'];
 
-		$recipe->left($value['kode'] . ' ('. $value['qty'] .' x '. number($value['harga']) .')');
-		$recipe->right(number($value['sub_total']));
-		$recipe->breaks();
+		$recipe->left($value['kode'] . ' ('. $value['qty'] .' x '. number($value['harga']) .')')
+			   ->right(number($value['sub_total']))
+			   ->breaks();
 
 		if ($value['diskon']) {
-			$recipe->left('Discount');
-			$recipe->right(number($value['diskon']));
-			$recipe->breaks();
+			$recipe->left('Discount')
+				   ->right(number($value['diskon']))
+				   ->breaks();
 
 			$diskon += $value['diskon'];
 		}
 	}
 	$grand_total = $jual - ($diskon + $voucher);
-	$kembali = $bayar - $grand_total;
+	$kembali     = $bayar - $grand_total;
 
 	$recipe->breaks('-');
-	$recipe->left('Harga Jual');
-	$recipe->right(number($jual));
-	$recipe->breaks();
-	$recipe->left('Total Diskon');
-	$recipe->right(number($diskon));
-	$recipe->breaks();
-	$recipe->left('Voucher');
-	$recipe->right(number($voucher));
-	$recipe->breaks();
-	$recipe->left('Grand Total');
-	$recipe->right(number($grand_total));
-	$recipe->breaks();
-	$recipe->left('Bayar');
-	$recipe->right(number($bayar));
-	$recipe->breaks();
-	$recipe->left('Kembali');
-	$recipe->right(number($kembali));
-	$recipe->breaks();
+	$recipe->left('Harga Jual')
+		   ->right(number($jual))
+		   ->breaks();
+	$recipe->left('Total Diskon')
+		   ->right(number($diskon))
+		   ->breaks();
+	$recipe->left('Voucher')
+		   ->right(number($voucher))
+		   ->breaks();
+	$recipe->left('Grand Total')
+		   ->right(number($grand_total))
+		   ->breaks();
+	$recipe->left('Bayar')
+		   ->right(number($bayar))
+		   ->breaks();
+	$recipe->left('Kembali')
+		   ->right(number($kembali))
+		   ->breaks();
 	$recipe->breaks(' ');
-	$recipe->center('Terima Kasih & Selamat Belanja Kembali');
-	$recipe->breaks();
+	$recipe->center('Terima Kasih & Selamat Belanja Kembali')
+		   ->breaks();
 	$recipe->end();
 	return $recipe->output();
 }
@@ -95,12 +91,13 @@ $pembelian = [
 
 $bayar = 200000;
 $voucher = 10000;
-$data = struk($pembelian, $bayar, $voucher);
+echo $data = struk($pembelian, $bayar, $voucher);
 
-$file =  'contoh.txt';  # nama file temporary yang akan dicetak
-$handle = fopen($file, 'w');
-fwrite($handle, $data);
-fclose($handle);
+// enable this for print in windows with shared folder only
+// $file =  'contoh.txt';  # nama file temporary yang akan dicetak
+// $handle = fopen($file, 'w');
+// fwrite($handle, $data);
+// fclose($handle);
 
 
-shell_exec("print /d:\\\\%COMPUTERNAME%\\\\mini-printer contoh.txt");
+// shell_exec("print /d:\\\\%COMPUTERNAME%\\\\mini-printer contoh.txt");

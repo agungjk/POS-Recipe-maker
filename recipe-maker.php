@@ -18,16 +18,19 @@ class RecipeMaker
 	public function left($value)
 	{
 		$this->left = $value;
+		return $this;
 	}
 
 	public function right($value)
 	{
 		$this->right = $value;
+		return $this;
 	}
 
 	public function center($value)
 	{
 		$this->center = $value;
+		return $this;
 	}
 
 	public function breaks($type = null)
@@ -41,11 +44,13 @@ class RecipeMaker
 		}
 
 		$this->emptyInput();
+		return $this;
 	}
 
 	public function end()
 	{
-		return $this->recipe .= "\n\n\n\n\n\n.";
+		$this->recipe .= "\n\n\n\n\n\n.";
+		return $this;
 	}
 
 	public function output()
