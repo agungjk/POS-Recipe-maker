@@ -30,12 +30,14 @@ function struk($pembelian, $bayar, $voucher = 0, $output = null)
 
 		$recipe->left($value['kode'] . ' ('. $value['qty'] .' x '. number($value['harga']) .')')
 			   ->right(number($value['sub_total']))
+			   ->sparator()
 			   ->breaks();
 
 		if ($value['diskon']) {
 			$diskon = $value['diskon'] * $value['sub_total'] / 100;
 			$recipe->left('- Diskon (' . $value['diskon'] . '%)')
 				   ->right(number($diskon))
+				   ->sparator()
 				   ->breaks();
 
 			$total_diskon += $diskon;
@@ -47,21 +49,27 @@ function struk($pembelian, $bayar, $voucher = 0, $output = null)
 	$recipe->breaks('-');
 	$recipe->left('Harga Jual')
 		   ->right(number($jual))
+		   ->sparator()
 		   ->breaks();
 	$recipe->left('Total Diskon')
 		   ->right(number($total_diskon))
+		   ->sparator()
 		   ->breaks();
 	$recipe->left('Voucher')
 		   ->right(number($voucher))
+		   ->sparator()
 		   ->breaks();
 	$recipe->left('Grand Total')
 		   ->right(number($grand_total))
+		   ->sparator()
 		   ->breaks();
 	$recipe->left('Bayar')
 		   ->right(number($bayar))
+		   ->sparator()
 		   ->breaks();
 	$recipe->left('Kembali')
 		   ->right(number($kembali))
+		   ->sparator()
 		   ->breaks();
 	$recipe->breaks(' ');
 	$recipe->center('Terima Kasih & Selamat Belanja Kembali')

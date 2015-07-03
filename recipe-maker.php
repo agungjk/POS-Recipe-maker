@@ -8,6 +8,7 @@ class RecipeMaker
 	protected $left;
 	protected $center;
 	protected $right;
+	protected $sparator;
 	protected $recipe;
 
 	function __construct($value)
@@ -33,11 +34,17 @@ class RecipeMaker
 		return $this;
 	}
 
+	public function sparator()
+	{
+		$this->sparator = true;
+		return $this;
+	}
+
 	public function breaks($type = null)
 	{
 		if ($this->left || $this->center || $this->right) {
 			$this->addCenter();
-			$this->addLeftOrRight();
+			$this->addLeftOrRightOrPosition();
 			$this->addBreak();
 		} else {
 			$this->addBreak($type);
@@ -66,9 +73,10 @@ class RecipeMaker
 
 	private function emptyInput()
 	{
-		$this->left   = '';
-		$this->center = '';
-		$this->right  = '';
+		$this->left     = '';
+		$this->center   = '';
+		$this->right    = '';
+		$this->sparator = '';
 	}
 
 	private function addCenter()
@@ -81,7 +89,7 @@ class RecipeMaker
 		}
 	}
 
-	private function addLeftOrRight()
+	private function addLeftOrRightOrPosition()
 	{
 		if ($this->left || $this->right) {
 			if ($this->left) {
@@ -89,11 +97,23 @@ class RecipeMaker
 				$this->recipe .= $this->left;
 			}
 
-			$remains = ($this->left?$remains:$this->width) - strlen($this->right);
-			$this->elemets($remains);
+			if ($this->sparator) {
+				$remains = ($this->left?$remains:$this->width) - 9;
+				$this->elemets($remains);
+				$this->recipe .= ':';
 
-			if ($this->right) {
-				$this->recipe .= $this->right;
+				if ($this->right) {
+					$remains = 8 - strlen($this->right);
+					$this->elemets($remains);
+					$this->recipe .= $this->right;
+				}
+			} else {
+				$remains = ($this->left?$remains:$this->width) - strlen($this->right);
+				$this->elemets($remains);
+
+				if ($this->right) {
+					$this->recipe .= $this->right;
+				}
 			}
 		}
 	}
